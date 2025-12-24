@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The 5% Lab</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Cormorant+Garamond:wght@300;400;500&family=DM+Mono:wght@300;400;500&family=Crimson+Pro:wght@300;400;500;600&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Pentagon Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><g stroke=%22%23b87850%22 stroke-width=%222%22 fill=%22none%22><path d=%22M50,10 L85,30 L75,70 L25,70 L15,30 Z%22 opacity=%220.3%22/><path d=%22M50,10 L50,50%22/><path d=%22M85,30 L50,50%22/><path d=%22M75,70 L50,50%22/><path d=%22M25,70 L50,50%22/><path d=%22M15,30 L50,50%22/><circle cx=%2250%22 cy=%2250%22 r=%222%22 fill=%22%23b87850%22/><text x=%2250%22 y=%2285%22 font-size=%228%22 fill=%22%23f8f6f0%22 text-anchor=%22middle%22>5%</text></g></svg>">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --charcoal: #1a1a1a;
+            --near-black: #0d0d0d;
+            --ivory: #f8f6f0;
+            --warm-white: #fefcf7;
+            --copper: #b87850;
+            --muted-copper: #9a6844;
+            --accent-line: #2a2a2a;
+            --subtle-gray: #666666;
+        }
+
+        body {
+            font-family: 'Work Sans', -apple-system, sans-serif;
+            background: var(--near-black);
+            color: var(--ivory);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 4rem 2rem;
+            position: relative;
+            background: linear-gradient(180deg, var(--near-black) 0%, var(--charcoal) 100%);
+        }
+
+        .grid-overlay {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(var(--accent-line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--accent-line) 1px, transparent 1px);
+            background-size: 60px 60px;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            max-width: 900px;
+            animation: fadeIn 1.2s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .brand-mark {
+            margin-bottom: 3rem;
+            animation: fadeIn 1.4s ease-out 0.3s both;
+        }
+
+        .main-logo {
+            width: 180px;
+            height: 180px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .logo-svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 4px 24px rgba(184, 120, 80, 0.15));
+        }
+
+        h1 {
+            font-family: 'Crimson Pro', serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 300;
+            letter-spacing: -0.02em;
+            margin-bottom: 1.5rem;
+            color: var(--warm-white);
+            animation: fadeIn 1.6s ease-out 0.6s both;
+        }
+
+        .subtitle {
+            font-family: 'DM Mono', monospace;
+            font-size: clamp(0.85rem, 2vw, 1rem);
+            font-weight: 400;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--copper);
+            margin-bottom: 2rem;
+            animation: fadeIn 1.8s ease-out 0.9s both;
+        }
+
+        .philosophy {
+            font-size: clamp(1rem, 2.5vw, 1.25rem);
+            font-weight: 300;
+            line-height: 1.8;
+            color: var(--ivory);
+            max-width: 700px;
+            margin: 0 auto 3rem;
+            animation: fadeIn 2s ease-out 1.2s both;
+        }
+
+        .section {
+            padding: 8rem 2rem;
+            position: relative;
+        }
+
+        .section-light {
+            background: var(--ivory);
+            color: var(--near-black);
+        }
+
+        .section-dark {
+            background: var(--charcoal);
+            color: var(--ivory);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-family: 'Crimson Pro', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 400;
+            margin-bottom: 1rem;
+            letter-spacing: -0.01em;
+        }
+
+        .section-subtitle {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.85rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            opacity: 0.6;
+            margin-bottom: 4rem;
+        }
+
+        /* Mantra Section */
+        .mantra-section {
+            background: var(--near-black);
+            padding: 8rem 2rem;
+            position: relative;
+        }
+
+        .mantra-card {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--warm-white);
+            border-radius: 16px;
+            padding: 4rem;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(184, 120, 80, 0.1);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .mantra-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--copper), transparent, var(--copper));
+            border-radius: 18px;
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        .mantra-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 2.5rem;
+            background: rgba(184, 120, 80, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--copper);
+        }
+
+        .mantra-icon svg {
+            width: 40px;
+            height: 40px;
+            stroke: var(--copper);
+            stroke-width: 1.5;
+            fill: none;
+        }
+
+        .mantra-text {
+            font-family: 'Crimson Pro', serif;
+            font-size: clamp(1.5rem, 3vw, 2.25rem);
+            font-weight: 300;
+            line-height: 1.6;
+            color: var(--near-black);
+            margin-bottom: 2rem;
+            font-style: italic;
+        }
+
+        .mantra-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--copper);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(184, 120, 80, 0.2);
+        }
+
+        /* Pillars Grid */
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .pillar-card {
+            background: var(--near-black);
+            padding: 2.5rem;
+            border-radius: 2px;
+            border: 1px solid var(--accent-line);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pillar-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--copper);
+        }
+
+        .pillar-number {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--copper);
+            margin-bottom: 1rem;
+            letter-spacing: 0.1em;
+        }
+
+        .pillar-title {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.75rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+            color: var(--ivory);
+        }
+
+        .pillar-description {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: var(--subtle-gray);
+            margin-bottom: 1.5rem;
+        }
+
+        .pillar-rules {
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--accent-line);
+        }
+
+        .rule {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+            font-size: 0.9rem;
+            color: var(--subtle-gray);
+        }
+
+        .rule::before {
+            content: '→';
+            color: var(--copper);
+            margin-right: 0.5rem;
+            font-weight: bold;
+        }
+
+        /* Three Rules of the Lab */
+        .rules-section {
+            background: var(--near-black);
+            padding: 8rem 2rem;
+            position: relative;
+        }
+
+        .rules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .rule-card {
+            background: var(--charcoal);
+            padding: 3rem;
+            border-radius: 2px;
+            border: 1px solid var(--accent-line);
+            position: relative;
+            transition: all 0.4s ease;
+        }
+
+        .rule-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--copper);
+        }
+
+        .rule-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--copper), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .rule-card:hover::before {
+            opacity: 1;
+        }
+
+        .rule-number {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--copper);
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.1em;
+        }
+
+        .rule-title {
+            font-family: 'Crimson Pro', serif;
+            font-size: 2rem;
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+            color: var(--warm-white);
+            line-height: 1.3;
+        }
+
+        .rule-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--subtle-gray);
+        }
+
+        .rule-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(184, 120, 80, 0.1);
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .rule-icon svg {
+            width: 30px;
+            height: 30px;
+            stroke: var(--copper);
+            stroke-width: 1.5;
+            fill: none;
+        }
+
+        /* Principles Grid */
+        .principles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .principle-card {
+            padding: 2.5rem;
+            border: 1px solid var(--accent-line);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .principle-card:hover {
+            border-color: var(--copper);
+            background: rgba(184, 120, 80, 0.03);
+        }
+
+        .principle-number {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--copper);
+            margin-bottom: 1rem;
+            letter-spacing: 0.1em;
+        }
+
+        .principle-title {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+            color: var(--ivory);
+        }
+
+        .principle-description {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: var(--subtle-gray);
+        }
+
+        /* Daily Practice */
+        .practice-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .practice-card {
+            background: var(--near-black);
+            padding: 3rem;
+            border-radius: 2px;
+            border: 1px solid var(--accent-line);
+        }
+
+        .practice-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .practice-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(184, 120, 80, 0.1);
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1.5rem;
+            font-family: 'DM Mono', monospace;
+            font-size: 1.5rem;
+            color: var(--copper);
+        }
+
+        .practice-title {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.75rem;
+            color: var(--ivory);
+        }
+
+        /* Scroll indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(to bottom, var(--copper), transparent);
+            margin: 0 auto;
+        }
+
+        /* Final Section */
+        .final-section {
+            padding: 8rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .final-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, rgba(184, 120, 80, 0.08), transparent 70%);
+        }
+
+        .final-logo {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 3rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .final-text {
+            font-family: 'Crimson Pro', serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 300;
+            margin-bottom: 1rem;
+            color: var(--warm-white);
+            position: relative;
+            z-index: 1;
+        }
+
+        .final-tagline {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.9rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--copper);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .section, .rules-section, .mantra-section {
+                padding: 4rem 1.5rem;
+            }
+            
+            .mantra-card {
+                padding: 3rem 2rem;
+                border-radius: 12px;
+            }
+            
+            .pillars-grid,
+            .principles-grid,
+            .practice-grid,
+            .rules-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* SVG Animations */
+        .logo-path {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: drawPath 2s ease-out forwards;
+        }
+
+        @keyframes drawPath {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="grid-overlay"></div>
+        <div class="hero-content">
+            <div class="brand-mark">
+                <div class="main-logo">
+                    <svg class="logo-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <g stroke="#b87850" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path class="logo-path" d="M100,20 L180,76 L153,164 L47,164 L20,76 Z" opacity="0.3"/>
+                            <path class="logo-path" d="M100,20 L100,100" style="animation-delay: 0.2s"/>
+                            <path class="logo-path" d="M180,76 L100,100" style="animation-delay: 0.3s"/>
+                            <path class="logo-path" d="M153,164 L100,100" style="animation-delay: 0.4s"/>
+                            <path class="logo-path" d="M47,164 L100,100" style="animation-delay: 0.5s"/>
+                            <path class="logo-path" d="M20,76 L100,100" style="animation-delay: 0.6s"/>
+                            <circle cx="100" cy="100" r="3" fill="#b87850" opacity="0.8" style="animation: pulse 2s infinite">
+                                <animate attributeName="r" values="3;5;3" dur="2s" repeatCount="indefinite"/>
+                                <animate attributeName="opacity" values="0.8;1;0.8" dur="2s" repeatCount="indefinite"/>
+                            </circle>
+                            <text x="100" y="145" font-family="DM Mono, monospace" font-size="14" fill="#f8f6f0" text-anchor="middle" opacity="0.7">5%</text>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+            
+            <h1>The 5% Lab</h1>
+            <div class="subtitle">Personal Growth Laboratory for the Annus Mirabilis</div>
+            <p class="philosophy">
+                Five pillars. One percent better. Every single day.<br>
+                Where discipline compounds into transformation.
+            </p>
+        </div>
+        <div class="scroll-indicator">
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- Mantra of the Lab -->
+    <section class="mantra-section">
+        <div class="container">
+            <h2 class="section-title">Mantra of the Lab</h2>
+            <p class="section-subtitle">Declaration of Purpose</p>
+            
+            <div class="mantra-card">
+                <div class="mantra-icon">
+                    <svg viewBox="0 0 100 100">
+                        <path d="M30,70 C30,50 50,30 70,30 M70,70 C70,50 50,30 30,30" stroke-width="2"/>
+                        <circle cx="30" cy="30" r="3" fill="#b87850"/>
+                        <circle cx="70" cy="30" r="3" fill="#b87850"/>
+                        <circle cx="30" cy="70" r="3" fill="#b87850"/>
+                        <circle cx="70" cy="70" r="3" fill="#b87850"/>
+                        <path d="M50,40 L50,60" stroke-width="1.5"/>
+                        <circle cx="50" cy="50" r="8" stroke-width="1.5" fill="none"/>
+                    </svg>
+                </div>
+                <p class="mantra-text">
+                    "I am thoroughly furnished, with wisdom and power, and I have resources to do what he says.<br>
+                    God has anointed me to do great things, and I will do great things."
+                </p>
+                <div class="mantra-label">LAB FOUNDATION — SPIRITUAL ANCHOR</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The 5 Pillars -->
+    <section class="section section-light">
+        <div class="container">
+            <h2 class="section-title" style="color: var(--near-black);">The 5 Pillars</h2>
+            <p class="section-subtitle" style="color: var(--charcoal);">What You Need to Get 1% Better At</p>
+            
+            <div class="pillars-grid">
+                <div class="pillar-card">
+                    <div class="pillar-number">PILLAR 01</div>
+                    <h3 class="pillar-title">Physical Exercise</h3>
+                    <p class="pillar-description">The gatepass pillar. Stabilizes mood and energy, prevents intellectual guilt sessions. This turns discipline into structure, not willpower.</p>
+                    <div class="pillar-rules">
+                        <div class="rule">No workout → no lab access</div>
+                        <div class="rule">Rest day → time rolls into work (not leisure)</div>
+                        <div class="rule">This is the entry ticket to the lab</div>
+                    </div>
+                </div>
+
+                <div class="pillar-card">
+                    <div class="pillar-number">PILLAR 02</div>
+                    <h3 class="pillar-title">Spirituality</h3>
+                    <p class="pillar-description">God, Prayer, Knowing God. Not optional. Provides moral alignment, psychological grounding, and a reference point bigger than ambition.</p>
+                    <div class="pillar-rules">
+                        <div class="rule">Prevents anxiety, emptiness, and arrogance</div>
+                        <div class="rule">Keeps the other four pillars clean</div>
+                        <div class="rule">Provides moral north for all decisions</div>
+                    </div>
+                </div>
+
+                <div class="pillar-card">
+                    <div class="pillar-number">PILLAR 03</div>
+                    <h3 class="pillar-title">Reading & Writing</h3>
+                    <p class="pillar-description">Where thinkers are made. Simplification, question asking, clarity, thinking. Reading inputs, writing crystallizes.</p>
+                    <div class="pillar-rules">
+                        <div class="rule">If you cannot explain it simply, you don't understand it yet</div>
+                        <div class="rule">Clarity compounds into wisdom</div>
+                        <div class="rule">This pillar compounds forever</div>
+                    </div>
+                </div>
+
+                <div class="pillar-card">
+                    <div class="pillar-number">PILLAR 04</div>
+                    <h3 class="pillar-title">Machine Learning & CS</h3>
+                    <p class="pillar-description">First principles, not trend chasing. Foundations over tutorials. This is your future leverage for intellectual work.</p>
+                    <div class="pillar-rules">
+                        <div class="rule">First principles only, no tool obsession</div>
+                        <div class="rule">Deep understanding over random tutorials</div>
+                        <div class="rule">Build mental models, not just knowledge</div>
+                    </div>
+                </div>
+
+                <div class="pillar-card">
+                    <div class="pillar-number">PILLAR 05</div>
+                    <h3 class="pillar-title">Work for Money</h3>
+                    <p class="pillar-description">Strategic humility. Not selling out, but securing survival capital. Has an expiration date.</p>
+                    <div class="pillar-rules">
+                        <div class="rule">Cash for now, passion later</div>
+                        <div class="rule">Making money to fuel your passion</div>
+                        <div class="rule">This work has an expiration date</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Three Rules of the Lab -->
+    <section class="rules-section">
+        <div class="container">
+            <h2 class="section-title">The Three Rules of the Lab</h2>
+            <p class="section-subtitle">Operational Principles for Compounding</p>
+            
+            <div class="rules-grid">
+                <div class="rule-card">
+                    <div class="rule-icon">
+                        <svg viewBox="0 0 100 100">
+                            <path d="M20,50 L40,50 L40,30 L60,30 L60,70 L40,70 L40,50 L80,50"/>
+                            <circle cx="85" cy="50" r="3"/>
+                        </svg>
+                    </div>
+                    <div class="rule-number">RULE 01</div>
+                    <h3 class="rule-title">Start Immediately</h3>
+                    <p class="rule-description">
+                        Don't get ready to do the work. Do the work. No preparation rituals, no perfect conditions, no waiting for motivation. Action creates momentum, not the other way around.
+                    </p>
+                </div>
+
+                <div class="rule-card">
+                    <div class="rule-icon">
+                        <svg viewBox="0 0 100 100">
+                            <path d="M30,30 C50,10 70,10 90,30 C70,50 50,70 30,50 C10,30 10,30 30,30"/>
+                            <circle cx="50" cy="50" r="5"/>
+                            <path d="M50,50 L50,70 M50,50 L70,50"/>
+                        </svg>
+                    </div>
+                    <div class="rule-number">RULE 02</div>
+                    <h3 class="rule-title">Go Down the Rabbit Hole</h3>
+                    <p class="rule-description">
+                        Be curious and rebellious enough to follow interesting questions wherever they lead. Depth over breadth. Mastery requires obsession. Follow the interesting thread until you understand it completely.
+                    </p>
+                </div>
+
+                <div class="rule-card">
+                    <div class="rule-icon">
+                        <svg viewBox="0 0 100 100">
+                            <polygon points="50,20 80,40 80,80 50,100 20,80 20,40"/>
+                            <path d="M50,40 L50,60 M40,50 L60,50"/>
+                            <text x="50" y="85" font-size="10" text-anchor="middle" fill="#b87850">1%</text>
+                        </svg>
+                    </div>
+                    <div class="rule-number">RULE 03</div>
+                    <h3 class="rule-title">Get 1% Better</h3>
+                    <p class="rule-description">
+                        At that one task. Every day. Not 100% better tomorrow. 1% better today. Compounding happens in small increments, consistently applied. Measure progress by skill, not by time spent.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Brand Principles -->
+    <section class="section section-dark">
+        <div class="container">
+            <h2 class="section-title">The 5% Philosophy</h2>
+            <p class="section-subtitle">Principles for Systematic Excellence</p>
+            
+            <div class="principles-grid">
+                <div class="principle-card">
+                    <div class="principle-number">PRINCIPLE 01</div>
+                    <h3 class="principle-title">Minimal Means</h3>
+                    <p class="principle-description">Every element must earn its place. Remove until you cannot remove anymore. What remains is essential.</p>
+                </div>
+
+                <div class="principle-card">
+                    <div class="principle-number">PRINCIPLE 02</div>
+                    <h3 class="principle-title">Systematic Beauty</h3>
+                    <p class="principle-description">Grids, geometry, mathematical precision. Beauty emerges from structure, not decoration. Form follows function.</p>
+                </div>
+
+                <div class="principle-card">
+                    <div class="principle-number">PRINCIPLE 03</div>
+                    <h3 class="principle-title">Quiet Intensity</h3>
+                    <p class="principle-description">Never shout. The work speaks through restraint. Confidence needs no amplification. Seriousness requires no performance.</p>
+                </div>
+
+                <div class="principle-card">
+                    <div class="principle-number">PRINCIPLE 04</div>
+                    <h3 class="principle-title">Timeless Over Trendy</h3>
+                    <p class="principle-description">No gradients. No drop shadows. No effects. Design that could exist in 1960 or 2060. Classic materials, classic methods.</p>
+                </div>
+
+                <div class="principle-card">
+                    <div class="principle-number">PRINCIPLE 05</div>
+                    <h3 class="principle-title">Human at Core</h3>
+                    <p class="principle-description">Despite precision, this is about human transformation. Copper warmth against cold geometry. The soul in the system.</p>
+                </div>
+
+                <div class="principle-card">
+                    <div class="principle-number">PRINCIPLE 06</div>
+                    <h3 class="principle-title">Laboratory Aesthetic</h3>
+                    <p class="principle-description">Research notebooks. Lab equipment. Clean surfaces. Measurement tools. Space designed for serious work, not performance.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Daily Practice -->
+    <section class="section section-light">
+        <div class="container">
+            <h2 class="section-title" style="color: var(--near-black);">The Daily Practice</h2>
+            <p class="section-subtitle" style="color: var(--charcoal);">From Philosophy to Action</p>
+            
+            <div class="practice-grid">
+                <div class="practice-card">
+                    <div class="practice-header">
+                        <div class="practice-icon">01</div>
+                        <h3 class="practice-title">Morning Ritual</h3>
+                    </div>
+                    <p style="color: var(--subtle-gray); line-height: 1.7;">
+                        Begin with physical training (gatepass). Follow with spiritual grounding. These two pillars create the container for the day's work. No exceptions.
+                    </p>
+                </div>
+
+                <div class="practice-card">
+                    <div class="practice-header">
+                        <div class="practice-icon">02</div>
+                        <h3 class="practice-title">Deep Work Blocks</h3>
+                    </div>
+                    <p style="color: var(--subtle-gray); line-height: 1.7;">
+                        3-4 hour blocks for reading/writing and ML/CS study. No distractions. Deep understanding over shallow consumption. Quality over quantity.
+                    </p>
+                </div>
+
+                <div class="practice-card">
+                    <div class="practice-header">
+                        <div class="practice-icon">03</div>
+                        <h3 class="practice-title">Strategic Work</h3>
+                    </div>
+                    <p style="color: var(--subtle-gray); line-height: 1.7;">
+                        Uncomfortable work for capital. This is temporary, strategic, and necessary. It funds the deeper work and buys time for transformation.
+                    </p>
+                </div>
+
+                <div class="practice-card">
+                    <div class="practice-header">
+                        <div class="practice-icon">04</div>
+                        <h3 class="practice-title">Evening Review</h3>
+                    </div>
+                    <p style="color: var(--subtle-gray); line-height: 1.7;">
+                        What compounded today? What leaked? Adjust for tomorrow. 1% better is a direction, not a destination. Measure progress, not perfection.
+                    </p>
+                </div>
+            </div>
+
+            <div style="margin-top: 4rem; padding: 3rem; background: var(--near-black); border-radius: 2px;">
+                <h3 style="font-family: 'Crimson Pro', serif; font-size: 1.75rem; color: var(--ivory); margin-bottom: 1.5rem;">The 1% Rule</h3>
+                <p style="color: var(--subtle-gray); line-height: 1.8; font-size: 1.1rem;">
+                    You don't need to be 100% better tomorrow. You need to be 1% better.<br>
+                    But you need to be 1% better <strong style="color: var(--copper);">every day</strong>.<br>
+                    No weekends. No exceptions. No zero days.<br>
+                    <strong style="color: var(--warm-white);">That's how compounding works.</strong>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final Section -->
+    <section class="final-section">
+        <div class="final-logo">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <g stroke="#b87850" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M100,20 L180,76 L153,164 L47,164 L20,76 Z" opacity="0.3"/>
+                    <path d="M100,20 L100,100"/>
+                    <path d="M180,76 L100,100"/>
+                    <path d="M153,164 L100,100"/>
+                    <path d="M47,164 L100,100"/>
+                    <path d="M20,76 L100,100"/>
+                    <circle cx="100" cy="100" r="3" fill="#b87850"/>
+                    <text x="100" y="145" font-family="DM Mono, monospace" font-size="14" fill="#f8f6f0" text-anchor="middle" opacity="0.7">5%</text>
+                </g>
+            </svg>
+        </div>
+        <h2 class="final-text">The 5% Lab</h2>
+        <p class="final-tagline">Where Discipline Compounds</p>
+        
+        <div style="margin-top: 5rem; padding: 3rem; border-top: 1px solid var(--accent-line); border-bottom: 1px solid var(--accent-line); max-width: 900px; margin-left: auto; margin-right: auto;">
+            <p style="font-family: 'Crimson Pro', serif; font-size: 1.5rem; line-height: 1.8; font-weight: 300; text-align: center; color: var(--ivory);">
+                Not for everyone. Not for now.<br>
+                For those who understand that mastery is measured in decades,<br>
+                and transformation begins with a single percent.
+            </p>
+        </div>
+        
+        <div style="margin-top: 4rem; font-family: 'DM Mono', monospace; font-size: 0.75rem; color: var(--subtle-gray); letter-spacing: 0.15em;">
+            THE 5% LAB — PERSONAL COMPOUNDING SYSTEM<br>
+            FIVE PILLARS. ONE PERCENT. EVERY DAY.
+        </div>
+    </section>
+
+</body>
+</html>
